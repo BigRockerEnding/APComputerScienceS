@@ -15,6 +15,7 @@ public class DeckTester {
 		assertTrue(empty.isEmpty());
 		Deck full = new Deck(new String[]{"Five", "Six"}, new String[]{"Clubs", "Spades"}, new int[]{5, 6});
 		assertFalse(full.isEmpty());
+		assertEquals(4, full.size());
 		Card findA = new Card("Five", "Spades", 5);
 		Card findB = new Card("Random", "Something", 0);
 		boolean foundA = false;
