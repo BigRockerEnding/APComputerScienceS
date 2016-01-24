@@ -1,8 +1,6 @@
 package org.jointheleague.stephenh.ElevenS;
 
 import static org.junit.Assert.*;
-import org.jointheleague.stephenh.ElevenS.*;
-
 import org.junit.Test;
 
 public class CardTester {

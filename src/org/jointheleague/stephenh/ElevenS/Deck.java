@@ -79,7 +79,6 @@ public class Deck {
 	 *         previously dealt.
 	 */
 	public Card deal() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 2 *** */
 		if (this.isEmpty()) return null;
 		size--;
 		return cards.get(size);
@@ -94,7 +93,8 @@ public class Deck {
 	public String toString() {
 		String rtn = "size = " + size + "\nUndealt cards: \n";
 
-		for (int k = size - 1; k >= 0; k--) {
+		if (size == 0) rtn = rtn + "none\n";
+		else for (int k = size - 1; k >= 0; k--) {
 			rtn = rtn + cards.get(k);
 			if (k != 0) {
 				rtn = rtn + ", ";
@@ -106,7 +106,8 @@ public class Deck {
 		}
 
 		rtn = rtn + "\nDealt cards: \n";
-		for (int k = cards.size() - 1; k >= size; k--) {
+		if (cards.size() - 1 <= size) rtn = rtn + "none\n";
+		else for (int k = cards.size() - 1; k >= size; k--) {
 			rtn = rtn + cards.get(k);
 			if (k != size) {
 				rtn = rtn + ", ";

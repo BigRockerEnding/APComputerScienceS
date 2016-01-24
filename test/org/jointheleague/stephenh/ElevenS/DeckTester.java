@@ -1,8 +1,6 @@
 package org.jointheleague.stephenh.ElevenS;
 
 import static org.junit.Assert.*;
-
-import org.jointheleague.stephenh.ElevenS.Deck;
 import org.junit.Test;
 
 public class DeckTester {
@@ -31,12 +29,22 @@ public class DeckTester {
 	@Test
 	public void testException() {
 		try {
-			Deck a = new Deck(null, new String[]{"0"}, new int[0]);
+			new Deck(null, new String[]{"0"}, new int[0]);
 			fail("Object must throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			
 		} catch (Exception e) {
 			fail("Object must throw IllegalArgumentException");
+		}
+	}
+	
+	@Test
+	public void manualTest() {
+		Deck deck = new Deck(new String[]{"Five", "Six"}, new String[]{"Clubs", "Spades"}, new int[]{5, 6});
+		System.out.println(deck);
+		while (!deck.isEmpty()) {
+			deck.deal();
+			System.out.println(deck);
 		}
 	}
 }
