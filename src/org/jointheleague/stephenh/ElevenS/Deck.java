@@ -1,6 +1,7 @@
 package org.jointheleague.stephenh.ElevenS;
 
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 /**
@@ -42,7 +43,6 @@ public class Deck {
 				cards.add(new Card(ranks[i], suit, values[i]));
 			}
 		}
-		this.size = cards.size();
 		shuffle();
 	}
 
@@ -69,7 +69,21 @@ public class Deck {
 	 * represent the entire deck.
 	 */
 	public void shuffle() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 4 *** */
+		Card[] shuffled = new Card[cards.size()];
+		for (int i = 0; i < cards.size(); i++) {
+			shuffled[i] = cards.get(i);
+		}
+		for (int i = shuffled.length - 1; i > 0; i--) {
+			int r = new Random().nextInt(i + 1);
+			Card temp = shuffled[i];
+			shuffled[i] = shuffled[r];
+			shuffled[r] = temp;
+		}
+		cards.clear();
+		for (Card card : shuffled) {
+			cards.add(card);
+		}
+		this.size = cards.size();
 	}
 
 	/**
@@ -92,9 +106,8 @@ public class Deck {
 	@Override
 	public String toString() {
 		String rtn = "size = " + size + "\nUndealt cards: \n";
-
 		if (size == 0) rtn = rtn + "none\n";
-		else for (int k = size - 1; k >= 0; k--) {
+		for (int k = size - 1; k >= 0; k--) {
 			rtn = rtn + cards.get(k);
 			if (k != 0) {
 				rtn = rtn + ", ";
@@ -106,8 +119,8 @@ public class Deck {
 		}
 
 		rtn = rtn + "\nDealt cards: \n";
-		if (cards.size() - 1 <= size) rtn = rtn + "none\n";
-		else for (int k = cards.size() - 1; k >= size; k--) {
+		if (cards.size() <= size) rtn = rtn + "none\n";
+		for (int k = cards.size() - 1; k >= size; k--) {
 			rtn = rtn + cards.get(k);
 			if (k != size) {
 				rtn = rtn + ", ";

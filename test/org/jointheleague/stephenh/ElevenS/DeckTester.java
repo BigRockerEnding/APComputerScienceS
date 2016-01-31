@@ -18,7 +18,8 @@ public class DeckTester {
 		Card findB = new Card("Random", "Something", 0);
 		boolean foundA = false;
 		boolean foundB = false;
-		for (Card c = full.deal(); !full.isEmpty(); c = full.deal()) {
+		while (!full.isEmpty()) {
+			Card c = full.deal();
 			if (c.matches(findA)) foundA = true;
 			if (c.matches(findB)) foundB = true;
 		}
@@ -41,10 +42,24 @@ public class DeckTester {
 	@Test
 	public void manualTest() {
 		Deck deck = new Deck(new String[]{"Five", "Six"}, new String[]{"Clubs", "Spades"}, new int[]{5, 6});
-		System.out.println(deck);
+		//System.out.println(deck);
 		while (!deck.isEmpty()) {
 			deck.deal();
-			System.out.println(deck);
+			//System.out.println(deck);
 		}
+	}
+	
+	@Test
+	public void testShuffle() {
+		Deck deck = new Deck(new String[]{"One", "Two"}, new String[]{"Hearts"}, new int[]{1, 2});
+		deck.deal();
+		deck.deal();
+		assertTrue(deck.isEmpty());
+		assertNull(deck.deal());
+		deck.shuffle();
+		assertFalse(deck.isEmpty());
+		System.out.println(deck);
+		assertNotNull(deck.deal());
+		System.out.println(deck);
 	}
 }
