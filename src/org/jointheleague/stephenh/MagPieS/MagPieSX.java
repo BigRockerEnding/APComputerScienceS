@@ -1,5 +1,8 @@
 package org.jointheleague.stephenh.MagPieS;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A program to carry on conversations with a human user. This version:
  * <ul>
@@ -29,38 +32,81 @@ public class MagPieSX {
 	 * @return a response based on the rules given
 	 */
 	public String getResponse(String statement) {
+		Map<String, String> responses = new HashMap<>();
+		responses.put("no", "Why so negative?");
+		responses.put("mother", "Tell me more about your family.");
+		responses.put("father", "Tell me more about your family.");
+		responses.put("sister", "Tell me more about your family.");
+		responses.put("brother", "Tell me more about your family.");
+		responses.put("mrs.", "She sounds like a good person");
+		responses.put("mr.", "He sounds like a good person");
+		responses.put("doctor who", "Doctor Who? I love Doctor Who!");
+		responses.put("kirby", "Are you talking about that pink puffball?");
 		String response = "";
 		if (statement.length() == 0) {
 			response = "Say something, please.";
 		}
 
-		else if (findKeyword(statement, "no") >= 0) {
-			response = "Why so negative?";
-		} else
-			if (findKeyword(statement, "mother") >= 0 || findKeyword(statement, "father") >= 0 || findKeyword(statement, "sister") >= 0 || findKeyword(statement, "brother") >= 0) {
-			response = "Tell me more about your family.";
+		for (String key : responses.keySet()) {
+			if (findKeyword(statement, key, 0) >= 0) {
+				response = responses.get(key);
+			}
+			
 		}
-
+		
+		if (response.length() > 0) return response;
 		// Responses which require transformations
+		else if (findKeyword(statement, "say", 0) >= 0) {
+			response = transformSayStatement(statement);
+		}
 		else if (findKeyword(statement, "I want to", 0) >= 0) {
 			response = transformIWantToStatement(statement);
+		} else if (findKeyword(statement, "I want", 0) >= 0) {
+			response = transformIWantStatement(statement);
 		}
 
 		else {
 			// Look for a two word (you <something> me)
 			// pattern
 			int psnY = findKeyword(statement, "you", 0);
-			int psnM = findKeyword(statement, "me", 0);
+			int psnI = findKeyword(statement, "I", 0);
 
 			if (psnY >= 0 && findKeyword(statement, "me", psnY) >= 0) {
 				response = transformYouMeStatement(statement);
-			} else if (psnM >= 0 && findKeyword(statement, "you", psnM) >= 0) {
-				response = transformMeYouStatement(statement);
+			} else if (psnI >= 0 && findKeyword(statement, "you", psnI) >= 0) {
+				response = transformIYouStatement(statement);
 			} else {
 				response = getRandomResponse();
 			}
 		}
 		return response;
+	}
+
+	private String transformSayStatement(String statement) {
+			statement = statement.trim();
+			String lastChar = statement.substring(statement
+					.length() - 1);
+			if (lastChar.equals(".")) {
+				statement = statement.substring(0, statement
+						.length() - 1);
+			}
+			int psn = findKeyword(statement, "say", 0);
+			String restOfStatement = statement.substring(psn + 3).trim();
+			return "Okay! " + restOfStatement;
+	}
+
+	private String transformIWantStatement(String statement) {
+		statement = statement.trim();
+		String lastChar = statement.substring(statement
+				.length() - 1);
+		if (lastChar.equals("."))
+		{
+			statement = statement.substring(0, statement
+					.length() - 1);
+		}
+		int psn = findKeyword(statement, "I want", 0);
+		String restOfStatement = statement.substring(psn + 6).trim();
+		return "Would you really be happy if you had " + restOfStatement + "?";
 	}
 
 	/**
@@ -104,7 +150,7 @@ public class MagPieSX {
 		return "What makes you think that I " + restOfStatement + " you?";
 	}
 
-	private String transformMeYouStatement(String statement) {
+	private String transformIYouStatement(String statement) {
 		// Remove the final period, if there is one
 		statement = statement.trim();
 		String lastChar = statement.substring(statement.length() - 1);
@@ -112,10 +158,10 @@ public class MagPieSX {
 			statement = statement.substring(0, statement.length() - 1);
 		}
 
-		int psnOfMe = findKeyword(statement, "me", 0);
-		int psnOfYou = findKeyword(statement, "you", psnOfMe + 3);
+		int psnOfI = findKeyword(statement, "I", 0);
+		int psnOfYou = findKeyword(statement, "you", psnOfI + 1);
 
-		String restOfStatement = statement.substring(psnOfMe + 3, psnOfYou).trim();
+		String restOfStatement = statement.substring(psnOfI + 1, psnOfYou).trim();
 		return "Why do you " + restOfStatement + " me?";
 	}
 
