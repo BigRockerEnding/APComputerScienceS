@@ -21,7 +21,7 @@ public class MagPieSRunner {
 		Scanner in = new Scanner(System.in);
 		String statement = in.nextLine();
 
-		while (!statement.equals("Bye")) {
+		while (!statement.equals("bye")) {
 			System.out.println(maggie.getResponse(statement.toLowerCase()));
 			statement = in.nextLine();
 		}
